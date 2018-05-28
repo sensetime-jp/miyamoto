@@ -740,6 +740,7 @@ loadTimesheets = function (exports) {
 
     // コマンド集
     var commands = [
+      ['doNothing', /^\./] // '.'から始まるメッセージは何もしない
       ['actionSignOut', /(退社|taisya|退勤)(した|しました|していました|しています|します|simasita|simasu)/],
       ['actionWhoIsOff', /(だれ|誰|who\s*is).*(休|やす(ま|み|む))/],
       ['actionWhoIsIn', /(だれ|誰|who\s*is)/],
@@ -760,6 +761,9 @@ loadTimesheets = function (exports) {
       return this[command[0]](username, message);
     }
   }
+
+  // 何もしない
+  Timesheets.prototype.doNothing = function(username, message) { };
 
   // 出勤
   Timesheets.prototype.actionSignIn = function(username, message) {
