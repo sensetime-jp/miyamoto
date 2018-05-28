@@ -623,11 +623,13 @@ function setUp() {
     new GSTemplate(spreadsheet);
 
     // 毎日11時頃に出勤してるかチェックする
+    /*
     ScriptApp.newTrigger('confirmSignIn')
       .timeBased()
       .everyDays(1)
       .atHour(11)
       .create();
+    */
 
     // 毎日22時頃に退勤してるかチェックする
     ScriptApp.newTrigger('confirmSignOut')
