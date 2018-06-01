@@ -28,7 +28,7 @@ loadTimesheets = function (exports) {
     var commands = [
       ['doNothing', /^\./] // '.'から始まるメッセージは何もしない
       ['actionSignOut', /(退社|taisya|退勤)(した|しました|していました|しています|します|simasita|simasu)/],
-      ['actionWhoIsOff', /(だれ|誰|who\s*is).*(休|やす(ま|み|む))/],
+      ['actionWhoIsOff', /(((だれ|誰|who\s*is).*(休|やす(ま|み|む)))|((休みの|休暇の|休んでいる)人))/],
       ['actionWhoIsIn', /(だれ|誰|who\s*is)/],
       ['actionCancelOff', /(休|やす(ま|み|む)|休暇).*(キャンセル|消|止|やめ|ません)/],
       ['actionOff', /(休|やす(ま|み|む)|休暇)/],
@@ -128,7 +128,7 @@ loadTimesheets = function (exports) {
 
   // 休暇中
   Timesheets.prototype.actionWhoIsOff = function(username, message) {
-    var dateObj = DateUtils.toDate(DateUtils.now());
+    var dateObj = (this.date == null) ? DateUtils.toDate(DateUtils.now()) : new Date(this.date[0], this.date[1]-1, this.date[2]);
     var dateStr = DateUtils.format("Y/m/d", dateObj);
     var result = _.compact(_.map(this.storage.getByDate(dateObj), function(row){
       return row.signIn === '-' ? row.user : undefined;
