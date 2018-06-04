@@ -90,6 +90,7 @@ function setUp() {
     new GSTemplate(spreadsheet);
 
     // 毎日11時頃に出勤してるかチェックする
+    // 社内の運用では出社チェックは不要であるため削除する。今後のマージの利便性を考えコードは残しておく
     /*
     ScriptApp.newTrigger('confirmSignIn')
       .timeBased()
