@@ -128,7 +128,7 @@ loadTimesheets = function (exports) {
 
   // 休暇中
   Timesheets.prototype.actionWhoIsOff = function(username, message) {
-    var dateObj = (this.date == null) ? DateUtils.toDate(DateUtils.now()) : new Date(this.date[0], this.date[1]-1, this.date[2]);
+    var dateObj = (this.date == null) ? DateUtils.toDate(DateUtils.now()) : new Date(this.date[0], this.date[1] - 1, this.date[2]);
     var dateStr = DateUtils.format("Y/m/d", dateObj);
     var result = _.compact(_.map(this.storage.getByDate(dateObj), function(row){
       return row.signIn === '-' ? row.user : undefined;
