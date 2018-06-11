@@ -743,7 +743,7 @@ loadTimesheets = function (exports) {
 
     // コマンド集
     var commands = [
-      ['doNothing', /^\./] // '.'から始まるメッセージは何もしない
+      ['doNothing', /^\./], // '.'から始まるメッセージは何もしない
       ['actionSignOut', /(退社|taisya|退勤)(した|しました|していました|しています|します|simasita|simasu)/],
       ['actionWhoIsOff', /(((だれ|誰|who\s*is).*(休|やす(ま|み|む)))|((休みの|休暇の|休んでいる)人))/],
       ['actionWhoIsIn', /(だれ|誰|who\s*is)/],
