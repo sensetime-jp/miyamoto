@@ -361,7 +361,8 @@ loadGSTemplate = function() {
         this.sheet.getRange("A1:L2").setValues([
           [
             "出勤", "出勤更新", "退勤", "退勤更新", "休暇", "休暇取消",
-            "出勤中", "出勤なし", "休暇中", "休暇なし", "出勤確認", "退勤確認"
+            "出勤中", "出勤なし", "休暇中", "休暇なし", "出勤確認", "退勤確認",
+            "作業中断", "作業再開"
           ],
           [
             "<@#1> おはようございます (#2)", "<@#1> 出勤時間を#2へ変更しました",
@@ -369,7 +370,8 @@ loadGSTemplate = function() {
             "<@#1> #2を休暇として登録しました", "<@#1> #2の休暇を取り消しました",
             "#1が出勤しています", "全員退勤しています",
             "#1は#2が休暇です", "#1に休暇の人はいません",
-            "今日は休暇ですか？ #1", "退勤しましたか？ #1"
+            "今日は休暇ですか？ #1", "退勤しましたか？ #1",
+            "<@#1> 作業中断を記録しました (#2)", "<@#1> 作業再開を記録しました (#2)"
           ]
         ]);
       }
@@ -504,6 +506,15 @@ loadGSTimesheets = function () {
 
     return row;
   };
+
+  GSTimesheets.prototype.appendnote = function(username, date, note) {
+    var row = this.get(username, date);
+    var prevnote = row.note;
+    if(prevnote != null) {
+      note = prevnote + " / " + note;
+    }
+    return this.set(username, date, {"signIn":row.signIn, "signOut":row.signOut, "note":note});
+  }
 
   GSTimesheets.prototype.getUsers = function() {
     return _.compact(_.map(this.spreadsheet.getSheets(), function(s) {
@@ -739,6 +750,7 @@ loadTimesheets = function (exports) {
     if(this.datetime !== null) {
       this.dateStr = DateUtils.format("Y/m/d", this.datetime);
       this.datetimeStr = DateUtils.format("Y/m/d H:M", this.datetime);
+      this.timeStr = DateUtils.format("H:M", this.datetime);
     }
 
     // コマンド集
@@ -750,6 +762,8 @@ loadTimesheets = function (exports) {
       ['actionCancelOff', /(休|やす(ま|み|む)|休暇).*(キャンセル|消|止|やめ|ません)/],
       ['actionOff', /(休|やす(ま|み|む)|休暇)/],
       ['actionSignIn', /(:walking:|:woman-walking:|:man-walking:)\s*(出社|syussya|出勤|作業開始)(した|しました|していました|しています|します|simasita|simasu)/],
+      ['actionPause', /((:walking:|:woman-walking:|:man-walking:)\s*作業中断)/],
+      ['actionResume', /((:walking:|:woman-walking:|:man-walking:)\s*作業再開)/ ],
       ['confirmSignIn', /__confirmSignIn__/],
       ['confirmSignOut', /__confirmSignOut__/],
     ];
@@ -868,6 +882,24 @@ loadTimesheets = function (exports) {
       this.responder.template("休暇中", dateStr, result.sort().join(', '));
     }
   };
+
+  // 作業中断
+  Timesheets.prototype.actionPause = function(username, message) {
+    if(this.datetime) {
+      var data = this.storage.get(username, this.datetime);
+      this.storage.appendnote(username, this.datetime, "作業中断@" + this.timeStr);
+      this.responder.template("作業中断", username, this.datetimeStr);
+    }
+  }
+
+  // 作業再開
+  Timesheets.prototype.actionResume = function(username, message) {
+    if(this.datetime) {
+      var data = this.storage.get(username, this.datetime);
+      this.storage.appendnote(username, this.datetime, "作業再開@" + this.timeStr);
+      this.responder.template("作業再開", username, this.datetimeStr);
+    }
+  }
 
   // 出勤していない人にメッセージを送る
   Timesheets.prototype.confirmSignIn = function(username, message) {
