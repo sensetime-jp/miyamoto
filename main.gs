@@ -507,13 +507,11 @@ loadGSTimesheets = function () {
     return row;
   };
 
-  GSTimesheets.prototype.appendnote = function(username, date, note) {
+  GSTimesheets.prototype.appendNote = function(username, date, note) {
     var row = this.get(username, date);
-    var prevnote = row.note;
-    if(prevnote != null) {
-      note = prevnote + " / " + note;
-    }
-    return this.set(username, date, {"signIn":row.signIn, "signOut":row.signOut, "note":note});
+    var previousNote = row.note;
+    var newNote = (previousNote === undefined) ? note : (previousNote + " / " + note);
+    return this.set(username, date, {signIn: row.signIn, signOut: row.signOut, note: newNote});
   }
 
   GSTimesheets.prototype.getUsers = function() {
@@ -887,7 +885,7 @@ loadTimesheets = function (exports) {
   Timesheets.prototype.actionPause = function(username, message) {
     if(this.datetime) {
       var data = this.storage.get(username, this.datetime);
-      this.storage.appendnote(username, this.datetime, "作業中断@" + this.timeStr);
+      this.storage.appendNote(username, this.datetime, "作業中断@" + this.timeStr);
       this.responder.template("作業中断", username, this.datetimeStr);
     }
   }
@@ -896,7 +894,7 @@ loadTimesheets = function (exports) {
   Timesheets.prototype.actionResume = function(username, message) {
     if(this.datetime) {
       var data = this.storage.get(username, this.datetime);
-      this.storage.appendnote(username, this.datetime, "作業再開@" + this.timeStr);
+      this.storage.appendNote(username, this.datetime, "作業再開@" + this.timeStr);
       this.responder.template("作業再開", username, this.datetimeStr);
     }
   }

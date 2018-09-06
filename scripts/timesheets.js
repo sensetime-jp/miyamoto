@@ -159,7 +159,7 @@ loadTimesheets = function (exports) {
   Timesheets.prototype.actionPause = function(username, message) {
     if(this.datetime) {
       var data = this.storage.get(username, this.datetime);
-      this.storage.appendnote(username, this.datetime, "作業中断@" + this.timeStr);
+      this.storage.appendNote(username, this.datetime, "作業中断@" + this.timeStr);
       this.responder.template("作業中断", username, this.datetimeStr);
     }
   }
@@ -168,7 +168,7 @@ loadTimesheets = function (exports) {
   Timesheets.prototype.actionResume = function(username, message) {
     if(this.datetime) {
       var data = this.storage.get(username, this.datetime);
-      this.storage.appendnote(username, this.datetime, "作業再開@" + this.timeStr);
+      this.storage.appendNote(username, this.datetime, "作業再開@" + this.timeStr);
       this.responder.template("作業再開", username, this.datetimeStr);
     }
   }
