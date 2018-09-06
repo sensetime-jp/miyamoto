@@ -87,6 +87,13 @@ loadGSTimesheets = function () {
     return row;
   };
 
+  GSTimesheets.prototype.appendNote = function(username, date, note) {
+    var row = this.get(username, date);
+    var previousNote = row.note;
+    var newNote = (previousNote === undefined) ? note : (previousNote + " / " + note);
+    return this.set(username, date, {signIn: row.signIn, signOut: row.signOut, note: newNote});
+  }
+
   GSTimesheets.prototype.getUsers = function() {
     return _.compact(_.map(this.spreadsheet.getSheets(), function(s) {
       var name = s.getName();

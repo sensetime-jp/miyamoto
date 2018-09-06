@@ -22,6 +22,7 @@ loadTimesheets = function (exports) {
     if(this.datetime !== null) {
       this.dateStr = DateUtils.format("Y/m/d", this.datetime);
       this.datetimeStr = DateUtils.format("Y/m/d H:M", this.datetime);
+      this.timeStr = DateUtils.format("H:M", this.datetime);
     }
 
     // コマンド集
@@ -33,6 +34,8 @@ loadTimesheets = function (exports) {
       ['actionCancelOff', /(休|やす(ま|み|む)|休暇).*(キャンセル|消|止|やめ|ません)/],
       ['actionOff', /(休|やす(ま|み|む)|休暇)/],
       ['actionSignIn', /(:walking:|:woman-walking:|:man-walking:)\s*(出社|syussya|出勤|作業開始)(した|しました|していました|しています|します|simasita|simasu)/],
+      ['actionPause', /((:walking:|:woman-walking:|:man-walking:)\s*作業中断)/],
+      ['actionResume', /((:walking:|:woman-walking:|:man-walking:)\s*作業再開)/ ],
       ['confirmSignIn', /__confirmSignIn__/],
       ['confirmSignOut', /__confirmSignOut__/],
     ];
@@ -151,6 +154,24 @@ loadTimesheets = function (exports) {
       this.responder.template("休暇中", dateStr, result.sort().join(', '));
     }
   };
+
+  // 作業中断
+  Timesheets.prototype.actionPause = function(username, message) {
+    if(this.datetime) {
+      var data = this.storage.get(username, this.datetime);
+      this.storage.appendNote(username, this.datetime, "作業中断@" + this.timeStr);
+      this.responder.template("作業中断", username, this.datetimeStr);
+    }
+  }
+
+  // 作業再開
+  Timesheets.prototype.actionResume = function(username, message) {
+    if(this.datetime) {
+      var data = this.storage.get(username, this.datetime);
+      this.storage.appendNote(username, this.datetime, "作業再開@" + this.timeStr);
+      this.responder.template("作業再開", username, this.datetimeStr);
+    }
+  }
 
   // 出勤していない人にメッセージを送る
   Timesheets.prototype.confirmSignIn = function(username, message) {
