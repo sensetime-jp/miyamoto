@@ -760,8 +760,8 @@ loadTimesheets = function (exports) {
       ['actionCancelOff', /(休|やす(ま|み|む)|休暇).*(キャンセル|消|止|やめ|ません)/],
       ['actionOff', /(休|やす(ま|み|む)|休暇)/],
       ['actionSignIn', /^(:walking:|:woman-walking:|:man-walking:)?\s*(出社|syussya|出勤|作業開始)(した|しました|していました|しています|します|simasita|simasu)/],
-      ['actionPause', /^(:walking:|:woman-walking:|:man-walking:)?\s*作業中断(した|しました|していました|しています|します|simasita|simasu)/],
-      ['actionResume', /^(:walking:|:woman-walking:|:man-walking:)?\s*作業再開(した|しました|していました|しています|します|simasita|simasu)/ ],
+      ['actionPause', /^(:walking:|:woman-walking:|:man-walking:)?\s*作業中断(した|しました|します)/],
+      ['actionResume', /^(:walking:|:woman-walking:|:man-walking:)?\s*作業再開(した|しました|します)/ ],
       ['confirmSignIn', /__confirmSignIn__/],
       ['confirmSignOut', /__confirmSignOut__/],
     ];
