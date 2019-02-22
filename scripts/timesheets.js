@@ -28,14 +28,14 @@ loadTimesheets = function (exports) {
     // コマンド集
     var commands = [
       ['doNothing', /^\./], // '.'から始まるメッセージは何もしない
-      ['actionSignOut', /(:walking:|:woman-walking:|:man-walking:)\s*(退社|taisya|退勤|作業終了)(した|しました|していました|しています|します|simasita|simasu)/],
+      ['actionSignOut', /^(:walking:|:woman-walking:|:man-walking:)?\s*(退社|taisya|退勤|作業終了)(した|しました|していました|しています|します|simasita|simasu)/],
       ['actionWhoIsOff', /(((だれ|誰|who\s*is).*(休|やす(ま|み|む)))|((休みの|休暇の|休んでいる)人))/],
       ['actionWhoIsIn', /(だれ|誰|who\s*is)/],
       ['actionCancelOff', /(休|やす(ま|み|む)|休暇).*(キャンセル|消|止|やめ|ません)/],
       ['actionOff', /(休|やす(ま|み|む)|休暇)/],
-      ['actionSignIn', /(:walking:|:woman-walking:|:man-walking:)\s*(出社|syussya|出勤|作業開始)(した|しました|していました|しています|します|simasita|simasu)/],
-      ['actionPause', /((:walking:|:woman-walking:|:man-walking:)\s*作業中断)/],
-      ['actionResume', /((:walking:|:woman-walking:|:man-walking:)\s*作業再開)/ ],
+      ['actionSignIn', /^(:walking:|:woman-walking:|:man-walking:)?\s*(出社|syussya|出勤|作業開始)(した|しました|していました|しています|します|simasita|simasu)/],
+      ['actionPause', /^(:walking:|:woman-walking:|:man-walking:)?\s*作業中断(した|しました|します)/],
+      ['actionResume', /^(:walking:|:woman-walking:|:man-walking:)?\s*作業再開(した|しました|します)/ ],
       ['confirmSignIn', /__confirmSignIn__/],
       ['confirmSignOut', /__confirmSignOut__/],
     ];
